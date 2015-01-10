@@ -6,29 +6,24 @@ import java.lang.*;
 import java.util.*;
 
 public class Barcks extends Bot {
-    private static int max_soldrs = 20;
-    private static int max_bashrs = 20;
-
-    public static int getMax_soldrs() {
-        return max_soldrs;
-    }
-
-    public static void setMax_soldrs(int max_soldrs) {
-        Barcks.max_soldrs = max_soldrs;
-    }
-
-    public static int getMax_bashrs() {
-        return max_bashrs;
-    }
-
-    public static void setMax_bashrs(int max_bashrs) {
-        Barcks.max_bashrs = max_bashrs;
-    }
+    private static int max_soldrs;
+    private static int max_bashrs;
 
     public static void loop(RobotController cnt) throws Exception {
-        Bot.init(cnt);
+        try {
+            Bot.init(cnt);
+            max_soldrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.SOLDIER));
+            max_bashrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.BASHER));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         while (true) {
             try {
+                if (Clock.getRoundNum() % 20 == 0) {
+                    max_soldrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.SOLDIER));
+                    max_bashrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.BASHER));
+                }
                 if (rand.nextDouble() <= 0.5) {
                     Bot.spawnUnit(RobotType.SOLDIER, max_soldrs);
                 } else {

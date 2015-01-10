@@ -8,22 +8,19 @@ import battlecode.common.TerrainTile;
 import java.lang.*;
 import java.lang.Exception;
 import java.util.*;
+import java.lang.Math.*;
 
 public class HQueue extends Bot {
-    public static int max_bvrs = 5;
-
-    public static int getMax_bvrs() {
-        return max_bvrs;
-    }
-
-    public static void setMax_bvrs(int max_bvrs) {
-        HQueue.max_bvrs = max_bvrs;
-    }
+    private static int max_bvrs = 5;
 
     public static void loop(RobotController cnt) throws Exception{
-        Bot.init(cnt);
-        Broadcast.bc_coords(rc, Channels.rally, (theirHQ.x + ourHQ.x) / 2, (theirHQ.y + ourHQ.y) / 2);
-        init_coords();
+        try {
+            Bot.init(cnt);
+            Broadcast.bc_coords(rc, 52, (theirHQ.x + ourHQ.x) / 2, (theirHQ.y + ourHQ.y) / 2);
+            init_coords();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while (true) {
             try {
@@ -38,15 +35,11 @@ public class HQueue extends Bot {
     }
 
     private static void init_coords()  throws GameActionException{
-        /*if (theirHQ.x < ourHQ.x) {
-
-            }
-        } */
         int their_lowest_x = 17000;
         int their_lowest_y = 17000;
         int their_highest_x = -17000;
         int their_highest_y = -17000;
-        for (Maplocation loc : theirTowers) {
+        for (MapLocation loc : theirTowers) {
             if (loc.x < their_lowest_x) {
                 their_lowest_x = loc.x;
             }
@@ -82,7 +75,7 @@ public class HQueue extends Bot {
         MapLocation low_y_loc = ourHQ;
         MapLocation high_y_loc = ourHQ;
 
-        for (Maplocation loc : ourTowers) {
+        for (MapLocation loc : ourTowers) {
             if (loc.x < our_lowest_x) {
                 our_lowest_x = loc.x;
                 low_x_loc = loc;
@@ -122,6 +115,7 @@ public class HQueue extends Bot {
         int highest_y;
         int offset = 5;
         boolean x_finalized = true;
+        boolean y_finalized = true;
         if (their_highest_x < our_highest_x) {
             if (rc.senseTerrainTile(high_x_loc.add(Direction.EAST, 5)) == TerrainTile.NORMAL) {
                 highest_x = high_x_loc.x + 5;
@@ -171,50 +165,57 @@ public class HQueue extends Bot {
 
 
         if (their_highest_y > our_highest_y) {
-            if (rc.senseTerrainTile(high_x_loc.add(Direction.EAST, 5)) == TerrainTile.NORMAL) {
-                highest_x = high_x_loc.x + 5;
-                x_finalized = false;
-            } else if (rc.senseTerrainTile(ourHQ.add(Direction.EAST, 4)) == TerrainTile.NORMAL) {
-                highest_x = high_x_loc.x + 4;
+            if (rc.senseTerrainTile(low_y_loc.add(Direction.NORTH, 5)) == TerrainTile.NORMAL) {
+                lowest_y = low_y_loc.y - 5;
+                y_finalized = false;
+            } else if (rc.senseTerrainTile(ourHQ.add(Direction.NORTH, 4)) == TerrainTile.NORMAL) {
+                lowest_y = low_y_loc.y - 4;
                 offset = 4;
-            } else if (rc.senseTerrainTile(ourHQ.add(Direction.EAST, 3)) == TerrainTile.NORMAL) {
-                highest_x = high_x_loc.x + 3;
+            } else if (rc.senseTerrainTile(ourHQ.add(Direction.NORTH, 3)) == TerrainTile.NORMAL) {
+                lowest_y = low_y_loc.y - 3;
                 offset = 3;
-            } else if (rc.senseTerrainTile(ourHQ.add(Direction.EAST, 2)) == TerrainTile.NORMAL) {
-                highest_x = high_x_loc.x + 2;
+            } else if (rc.senseTerrainTile(ourHQ.add(Direction.NORTH, 2)) == TerrainTile.NORMAL) {
+                lowest_y = low_y_loc.y - 2;
                 offset = 2;
-            } else if (rc.senseTerrainTile(ourHQ.add(Direction.EAST, 1)) == TerrainTile.NORMAL) {
-                highest_x = high_x_loc.x + 1;
+            } else if (rc.senseTerrainTile(ourHQ.add(Direction.NORTH, 1)) == TerrainTile.NORMAL) {
+                lowest_y = low_y_loc.y - 1;
                 offset = 1;
             } else {
-                highest_x = high_x_loc.x;
+                lowest_y = low_y_loc.y;
                 offset = 0;
             }
 
-            lowest_x = their_lowest_x - offset;
+            highest_y = their_highest_y + offset;
 
         } else {
-            if (rc.senseTerrainTile(low_x_loc.add(Direction.WEST, 5)) == TerrainTile.NORMAL) {
-                lowest_x = low_x_loc.x - 5;
+            if (rc.senseTerrainTile(high_y_loc.add(Direction.SOUTH, 5)) == TerrainTile.NORMAL) {
+                highest_y = high_y_loc.y + 5;
                 x_finalized = false;
             } else if (rc.senseTerrainTile(ourHQ.add(Direction.WEST, 4)) == TerrainTile.NORMAL) {
-                lowest_x = low_x_loc.x - 4;
+                highest_y = high_y_loc.y + 4;
                 offset = 4;
             } else if (rc.senseTerrainTile(ourHQ.add(Direction.WEST, 3)) == TerrainTile.NORMAL) {
-                lowest_x = low_x_loc.x - 3;
+                highest_y = high_y_loc.y + 3;
                 offset = 3;
             } else if (rc.senseTerrainTile(ourHQ.add(Direction.WEST, 2)) == TerrainTile.NORMAL) {
-                lowest_x = low_x_loc.x - 2;
+                highest_y = high_y_loc.y + 2;
                 offset = 2;
             } else if (rc.senseTerrainTile(ourHQ.add(Direction.WEST, 1)) == TerrainTile.NORMAL) {
-                lowest_x = low_x_loc.x - 1;
+                highest_y = high_y_loc.y + 1;
                 offset = 1;
             } else {
-                lowest_x = low_x_loc.x;
+                highest_y = high_y_loc.y;
                 offset = 0;
             }
 
-            highest_x = their_highest_x + offset;
+            lowest_y = their_lowest_y - offset;
         }
+
+        Broadcast.bc(rc, 40, lowest_x);
+        Broadcast.bc(rc, 41, highest_x);
+        Broadcast.bc(rc, 42, lowest_y);
+        Broadcast.bc(rc, 43, highest_y);
+        Broadcast.bc(rc, 48, highest_x - lowest_x);
+        Broadcast.bc(rc, 49, highest_y - lowest_y);
     }
 }

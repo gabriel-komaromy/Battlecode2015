@@ -8,32 +8,78 @@ import java.util.*;
 import java.lang.Math.*;
 
 public class Bvr extends Bot {
-    private static int max_minrfct = 2;
-    private static int max_barcks = 1;
-    private static int max_aerspclab = 1;
-    private static int max_hlpd = 1;
-    private static int max_hndwshstn = 0;
-    private static int max_supdep = 5;
-    private static int max_tnkfct = 1;
-    private static int max_techinst = 1;
-    private static int max_trngfld = 1;
+    private static int max_minrfct;
+    private static int max_barcks;
+    private static int max_aerspclab;
+    private static int max_hlpd;
+    private static int max_hndwshstn;
+    private static int max_supdep;
+    private static int max_tnkfct;
+    private static int max_techinst;
+    private static int max_trngfld;
 
     public static void loop(RobotController cnt) throws Exception {
-        Bot.init(cnt);
-        Nav.init(cnt);
+        try {
+            Bot.init(cnt);
+            Nav.init(cnt);
+            max_minrfct = Broadcast.read(rc, Channels.getChannelMax(RobotType.MINERFACTORY));
+            max_barcks = Broadcast.read(rc, Channels.getChannelMax(RobotType.BARRACKS));
+            max_aerspclab = Broadcast.read(rc, Channels.getChannelMax(RobotType.AEROSPACELAB));
+            max_hlpd = Broadcast.read(rc, Channels.getChannelMax(RobotType.HELIPAD));
+            max_hndwshstn = Broadcast.read(rc, Channels.getChannelMax(RobotType.HANDWASHSTATION));
+            max_supdep = Broadcast.read(rc, Channels.getChannelMax(RobotType.SUPPLYDEPOT));
+            max_tnkfct = Broadcast.read(rc, Channels.getChannelMax(RobotType.TANKFACTORY));
+            max_techinst = Broadcast.read(rc, Channels.getChannelMax(RobotType.TECHNOLOGYINSTITUTE));
+            max_trngfld = Broadcast.read(rc, Channels.getChannelMax(RobotType.TRAININGFIELD));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while (true) {
-            MapLocation here = rc.getLocation();
-            double ore = rc.getTeamOre();
             try {
+                int rd = Clock.getRoundNum() % 20;
+                switch (rd) {
+                    case 0:
+                        max_minrfct = Broadcast.read(rc, Channels.getChannelMax(RobotType.MINERFACTORY));
+                        break;
+                    case 1:
+                        max_barcks = Broadcast.read(rc, Channels.getChannelMax(RobotType.BARRACKS));
+                        break;
+                    case 2:
+                        max_aerspclab = Broadcast.read(rc, Channels.getChannelMax(RobotType.AEROSPACELAB));
+                        break;
+                    case 3:
+                        max_hlpd = Broadcast.read(rc, Channels.getChannelMax(RobotType.HELIPAD));
+                        break;
+                    case 4:
+                        max_hndwshstn = Broadcast.read(rc, Channels.getChannelMax(RobotType.HANDWASHSTATION));
+                        break;
+                    case 5:
+                        max_supdep = Broadcast.read(rc, Channels.getChannelMax(RobotType.SUPPLYDEPOT));
+                        break;
+                    case 6:
+                        max_tnkfct = Broadcast.read(rc, Channels.getChannelMax(RobotType.TANKFACTORY));
+                        break;
+                    case 7:
+                        max_techinst = Broadcast.read(rc, Channels.getChannelMax(RobotType.TECHNOLOGYINSTITUTE));
+                        break;
+                    case 8:
+                        max_trngfld = Broadcast.read(rc, Channels.getChannelMax(RobotType.TRAININGFIELD));
+                        break;
+                    default:
+                        break;
+                }
+                MapLocation here = rc.getLocation();
+                double ore = rc.getTeamOre();
                 /**
-                try_build(RobotType.BARRACKS, ore, here);
-                try_build(RobotType.SUPPLYDEPOT, ore, here);
-                try_build_dep(RobotType.TANKFACTORY, ore, here);
-                try_build(RobotType.TECHNOLOGYINSTITUTE, ore, here);
-                try_build_dep(RobotType.TRAININGFIELD, ore, here);
-                try_build(RobotType.HELIPAD, ore, here);
-                try_build_dep(RobotType.AEROSPACELAB, ore, here);
+                 try_build(RobotType.BARRACKS, ore, here);
+                 try_build(RobotType.SUPPLYDEPOT, ore, here);
+                 try_build_dep(RobotType.TANKFACTORY, ore, here);
+                 try_build(RobotType.TECHNOLOGYINSTITUTE, ore, here);
+                 try_build_dep(RobotType.TRAININGFIELD, ore, here);
+                 try_build(RobotType.HELIPAD, ore, here);
+                 try_build_dep(RobotType.AEROSPACELAB, ore, here);
                  **/
                 try_build(RobotType.MINERFACTORY, ore, here);
                 Bot.mine_well(RobotType.BEAVER, 2, 20);

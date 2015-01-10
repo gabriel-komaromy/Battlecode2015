@@ -118,7 +118,9 @@ public class Bot {
                         rc.mine();
                     }
                 } else {
-                    Nav.goTo(best, Nav.Engage.NO);
+                    int[] num = new int[0];
+
+                    Nav.goTo(best, Nav.Engage.NO, num);
                 }
             }
         }
@@ -152,14 +154,13 @@ public class Bot {
     }
 
     public static boolean isInTheirStaticAttackRange(MapLocation loc) {
-        int dist_sq = theirHQ.distanceSquaredTo(loc);
-        if (dist_sq < 25 || (loc.x == theirHQ.x && loc.y == theirHQ.y)) {
+        int range_sq = theirHQ.distanceSquaredTo(loc);
+        if (range_sq < 25 || (loc.x == theirHQ.x && loc.y == theirHQ.y)) {
             return true;
         }
-        int dist_sq;
         for (MapLocation tower : theirTowers) {
-            dist_sq = tower.distanceSquaredTo(loc);
-            if (dist_sq < 25 || (loc.x == tower.x && loc.y == tower.y)) {
+            range_sq = tower.distanceSquaredTo(loc);
+            if (range_sq < 25 || (loc.x == tower.x && loc.y == tower.y)) {
                 return true;
             }
         }

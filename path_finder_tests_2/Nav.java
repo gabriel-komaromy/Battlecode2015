@@ -185,7 +185,7 @@ public class Nav {
     }
 
     private static boolean tryMoveBfs(MapLocation here) throws GameActionException {
-        Direction bfsDir = Bfs.readResult(here, dest);
+        /*Direction bfsDir = Bfs.readResult(here, dest);
 
         if (bfsDir == null) return false;
 
@@ -198,7 +198,7 @@ public class Nav {
                     return true;
                 }
             }
-        }
+        } */
         return false;
     }
 

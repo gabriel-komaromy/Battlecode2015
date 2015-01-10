@@ -3,83 +3,53 @@ package path_finder_tests_2;
 import battlecode.common.*;
 
 public class Channels {
-    public static final int minrfct = 0;
-    public static final int supdep = 1;
-    public static final int barcks = 2;
-    public static final int hlpd = 3;
-    public static final int lnchr = 4;
-    public static final int tnkfct = 5;
-    public static final int techinst = 6;
-    public static final int trngfld = 7;
-    public static final int aerspclab = 8;
-    public static final int hndwshstn = 9;
-    public static final int minr = 10;
-    public static final int bvr = 11;
-    public static final int soldr = 12;
-    public static final int drn = 13;
-    public static final int cmdr = 14;
-    public static final int cmptr = 15;
-    public static final int misl = 16;
-    public static final int tnk = 17;
-    public static final int hq = 18;
-    public static final int towr = 19;
-    public static final int prelim_x_1 = 20;
-    public static final int prelim_x_2 = 21;
-    public static final int prelim_y_1 = 22;
-    public static final int prelim_y_2 = 23;
-    public static final int actual_x_1 = 24;
-    public static final int actual_x_2 = 25;
-    public static final int actual_y_1 = 26;
-    public static final int actual_y_2 = 27;
-    public static final int prelim_width = 28;
-    public static final int prelim_height = 29;
-    public static final int actual_width = 30;
-    public static final int actual_height = 31;
-    public static final int rally = 32;
-
 
     public static int getChannel(RobotType type) {
         switch (type) {
             case MINER:
-                return minr;
+                return 10;
             case BEAVER:
-                return bvr;
+                return 11;
             case SOLDIER:
-                return soldr;
+                return 12;
             case DRONE:
-                return drn;
+                return 13;
             case COMMANDER:
-                return cmdr;
+                return 14;
             case COMPUTER:
-                return cmptr;
+                return 15;
             case MISSILE:
-                return misl;
+                return 16;
             case TANK:
-                return tnk;
+                return 17;
             case LAUNCHER:
-                return lnchr;
+                return 4;
             case MINERFACTORY:
-                return minrfct;
+                return 0;
             case SUPPLYDEPOT:
-                return supdep;
+                return 1;
             case BARRACKS:
-                return barcks;
+                return 2;
             case HELIPAD:
-                return hlpd;
+                return 3;
             case TANKFACTORY:
-                return tnkfct;
+                return 5;
             case TECHNOLOGYINSTITUTE:
-                return techinst;
+                return 6;
             case TRAININGFIELD:
-                return trngfld;
+                return 7;
             case AEROSPACELAB:
-                return aerspclab;
+                return 8;
             case HANDWASHSTATION:
-                return hndwshstn;
+                return 9;
             case TOWER:
-                return towr;
+                return 19;
             default:
-                return hq;
+                return 18;
         }
+    }
+
+    public static int getChannelMax(RobotType type) {
+        return getChannel(type) + 20;
     }
 }

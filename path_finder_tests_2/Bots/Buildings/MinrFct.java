@@ -7,21 +7,23 @@ import java.lang.*;
 import java.util.*;
 
 public class MinrFct extends Bot {
-    private static int max_minrs = 10;
-
-    public static int getMax_minrs() {
-        return max_minrs;
-    }
-
-    public static void setMax_minrs(int max_minrs) {
-        MinrFct.max_minrs = max_minrs;
-    }
+    private static int max_minrs;
 
     public static void loop(RobotController cnt) throws GameActionException {
-        Bot.init(cnt);
+        try {
+            Bot.init(cnt);
+            max_minrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.MINER));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while (true) {
             try {
+                if (Clock.getRoundNum() == 20) {
+                    max_minrs = Broadcast.read(rc, Channels.getChannelMax(RobotType.MINER));
+                }
+
                 Bot.spawnUnit(RobotType.MINER, max_minrs);
                 Bot.yield_actions(rc);
             } catch (Exception e) {

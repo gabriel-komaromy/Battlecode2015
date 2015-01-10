@@ -7,14 +7,24 @@ import java.util.*;
 
 public class Hlpd extends Bot {
 
+    private static int max_drns;
+
     public static void loop(RobotController cnt) throws Exception {
-        Bot.init(cnt);
+        try {
+            Bot.init(cnt);
+            max_drns = Broadcast.read(rc, Channels.getChannelMax(RobotType.DRONE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         while (true) {
             try {
-
+                if (Clock.getRoundNum() % 20 == 0) {
+                    max_drns = Broadcast.read(rc, Channels.getChannelMax(RobotType.DRONE));
+                }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }

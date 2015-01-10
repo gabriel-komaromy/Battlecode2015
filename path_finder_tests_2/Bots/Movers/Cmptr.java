@@ -8,13 +8,17 @@ import java.util.*;
 public class Cmptr extends Bot {
 
     public static void loop(RobotController cnt) throws Exception {
-        Bot.init(cnt);
+        try {
+            Bot.init(cnt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         while (true) {
             try {
 
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }
