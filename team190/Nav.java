@@ -1,5 +1,11 @@
 package team190;
 
+/**
+ * I took most of this code from here https://github.com/TheDuck314/battlecode2014/tree/master/teams/zephyr. My rationale
+ * for not writing my own pathfinding was that it's shockingly difficult and I was working alone; I wanted to be able to
+ * code the more fun parts that relied on pathfinding.
+ */
+
 import battlecode.common.*;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
